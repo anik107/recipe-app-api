@@ -1,7 +1,8 @@
-FROM python:3.9-alpine3.13
-LABEL maintainer="@anik107"
+FROM python:3.9-alpine
+LABEL maintainer="recipe-app-api"
 
-ENV PYTHONUNBUFFERED=1
+ENV PYTHONUNBUFFERED 1
+
 COPY ./requirements.txt /tmp/requirements.txt
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
 COPY ./app /app
@@ -12,15 +13,15 @@ ARG DEV=false
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     /py/bin/pip install -r /tmp/requirements.txt && \
-    if [ "$DEV" = true ]; \
+    if [ $DEV = "true" ]; \
         then /py/bin/pip install -r /tmp/requirements.dev.txt ; \
     fi && \
     rm -rf /tmp && \
     adduser \
         --disabled-password \
         --no-create-home \
-        django-user 
+        django-user
 
-ENV PATH="/py/bin:$PATH" 
+ENV PATH="/py/bin:$PATH"
 
 USER django-user
