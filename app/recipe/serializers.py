@@ -70,7 +70,7 @@ class RecipeSerializer(serializers.ModelSerializer):
             # Clear existing tags
             instance.tags.clear()
             self._get_or_create_tags(tags, instance)
-            
+
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
 
@@ -82,3 +82,11 @@ class RecipeDetailSerializer(RecipeSerializer):
     class Meta(RecipeSerializer.Meta):
         fields = RecipeSerializer.Meta.fields + ['description']
         # read_only_fields = RecipeSerializer.Meta.read_only_fields + ['description']
+
+class RecipeImageSerializer(serializers.ModelSerializer):
+    """Serializer for uploading images to recipes."""
+    class Meta:
+        model = Recipe
+        fields = ['id', 'image']
+        read_only_fields = ['id']
+        extra_kwargs = {'image': {'required': True}}
